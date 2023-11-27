@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\Users;
+use App\Models\Cargos;
 use Illuminate\Http\Request;
 class UsersController extends Controller
 {
@@ -12,14 +13,16 @@ class UsersController extends Controller
      */
     public function index()
     {
-        return Users::all();
+        $users = Users::with('cargos')
+                ->with('departamentos')
+                ->get();
+        return $users;
     }
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
-
         $request->validate([
             'usuario'           => 'required|string',
             'primerNombre'       => 'required|string',
